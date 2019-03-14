@@ -19,7 +19,7 @@ function rootReducer(state = initialState, action) {
         });
     } else if (action.type === DATA_LOADED) {
         return Object.assign({}, state, {
-            articles: state.remoteArticles.concat(action.payload)
+            remoteArticles: state.remoteArticles.concat(action.payload)
         });
     } else if (action.type === API_ERRORED) {
         return Object.assign({}, state, {
