@@ -1,7 +1,7 @@
 import "regenerator-runtime/runtime";
 import { takeEvery, call, put, all } from "redux-saga/effects";
 import {DATA_LOADED, DATA_REFRESHED, REFRESH_DATA,
-    CREATE_USER,
+    CREATE_USER, UPDATE_USER, USER_UPDATED,
     DELETE_USER,
     DATA_REQUESTED, API_ERRORED} from "../actions/action-types";
 
@@ -12,6 +12,7 @@ export default function* rootSaga() {
         requestDataWatcher(),
         refreshDataWatcher(),
         createUserWatcher(),
+        updateUserWatcher(),
         deleteUserWatcher()
     ])
 }
@@ -45,9 +46,35 @@ function* createUserWatcher() {
 }
 function* createUserWorker(action) {
     try {
-        const payload = yield call(createUser, action.payload);
-        yield put({type: REFRESH_DATA});
+        const response = yield call(createUser, action.payload);
+        if (response.status >= 200 && response.status < 300) {
+            yield put({type: REFRESH_DATA});
+        } else {
+            const error = yield response.text();
+            console.log(error);
+            yield put({ type: API_ERRORED, payload: error });
+        }
     } catch (e) {
+        console.log(e);
+        yield put({ type: API_ERRORED, payload: e });
+    }
+}
+
+function* updateUserWatcher() {
+    yield takeEvery(UPDATE_USER, updateUserWorker);
+}
+function* updateUserWorker(action) {
+    try {
+        const response = yield call(updateUser, action.payload);
+        if (response.status >= 200 && response.status < 300) {
+            yield put({type: REFRESH_DATA});
+        } else {
+            const error = yield response.text();
+            console.log(error);
+            yield put({ type: API_ERRORED, payload: error });
+        }
+    } catch (e) {
+        console.log(e);
         yield put({ type: API_ERRORED, payload: e });
     }
 }
@@ -78,7 +105,18 @@ function createUser(user) {
             "Content-Type": "application/json",
         },
         body: JSON.stringify(user), // body data type must match "Content-Type" header
-    }).then(response => response.json()); // parses response to JSON
+    }).then(response => response);// parses response to JSON
+}
+
+function updateUser(user) {
+    return fetch(apiUrl + "/user", {
+        method: "PUT",
+        mode: "cors", // no-cors, cors, *same-origin
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user), // body data type must match "Content-Type" header
+    }).then(response => response);
 }
 
 function deleteUser(id) {

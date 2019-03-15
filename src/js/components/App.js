@@ -5,11 +5,11 @@ import Message from "./Message";
 const App = () => (
     <div className="row">
         <div className="col">
-            <h2>Remote Users</h2>
+            <h2>Users</h2>
             <Post />
         </div>
         <div className="col">
-            <h2>Add a User</h2>
+            <h2>Add/Edit a User</h2>
             <Form />
             <Message />
         </div>

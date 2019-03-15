@@ -1,46 +1,90 @@
-import React, { Component } from "react";
+import React, { PureComponent } from "react";
 import { connect } from "react-redux";
-import uuidv4 from "uuid";
-import { createUser } from "../actions/index";
+import { createUser, updateUser } from "../actions/index";
 
-class ConnectedForm extends Component {
-    constructor() {
-        super();
+const mapStateToProps = state => {
+    return { editUser: state.editUser, newUser: state.newUser};
+};
+
+class ConnectedForm extends PureComponent {
+    constructor(props) {
+        super(props);
         this.state = {
-            name: ''
-        };
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+            editUser: undefined,
+            newUser: undefined
+        }
     }
-    handleChange(event) {
-        this.setState({ [event.target.id]: event.target.value });
+    componentWillReceiveProps(nextProps, nextContext) {
+        let editUser = nextProps.editUser ? {...this.state.editUser, id: nextProps.editUser.id, name: nextProps.editUser.name} : undefined;
+        this.setState({editUser});
+        let newUser = nextProps.newUser ? {...this.state.newUser, id: nextProps.newUser.id, name: nextProps.newUser.name} : undefined;
+        this.setState({newUser});
     }
-    handleSubmit(event) {
-        event.preventDefault();
-        const { name } = this.state;
-        const id = uuidv4();
-        this.props.createUser({ id, name});
-        this.setState({ name: "" });
+
+    handleNewUserChange(event) {
+        this.setState({newUser: {...this.state.newUser, name: event.target.value}});
     }
-    render() {
-        const { name } = this.state;
-        return (
-            <form onSubmit={this.handleSubmit}>
+    handleEditUserChange(event) {
+        this.setState({editUser: {...this.state.editUser, name: event.target.value}});
+    }
+    handleNewUserSubmit() {
+        const { newUser} = this.state;
+        this.props.createUser(newUser);
+
+    }
+
+    handleEditUserSubmit() {
+        const { editUser} = this.state;
+        this.props.updateUser(editUser);
+    }
+
+    renderEditUserForm() {
+        const { editUser } = this.state;
+        if (editUser) {
+            return <div>
                 <div className="form-group">
-                    <label htmlFor="name">Name</label>
+                    <label htmlFor="edit">Edit name</label>
                     <input
-                        type="text"
-                        className="form-control"
-                        id="name"
-                        value={name}
-                        onChange={this.handleChange}
+                      type="text"
+                      className="form-control"
+                      id="edit"
+                      value={editUser.name}
+                      onChange={(e) => this.handleEditUserChange(e)}
                     />
                 </div>
-                <button type="submit" className="btn btn-success btn-lg">
+                <button onClick={() => this.handleEditUserSubmit()} className="btn btn-success btn-lg">
                     SAVE
                 </button>
-            </form>
-        );
+            </div>
+        }
+    }
+
+    renderNewUserForm() {
+        const { newUser } = this.state;
+        if (newUser) {
+            return <div>
+                <div className="form-group">
+                    <label htmlFor="add">Enter new user's name</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      id="add"
+                      value={newUser.name}
+                      onChange={(e) => this.handleNewUserChange(e)}
+                    />
+                </div>
+                <button  onClick={() => this.handleNewUserSubmit()} className="btn btn-success btn-lg">
+                    CREATE
+                </button>
+            </div>
+        }
+    }
+
+    render() {
+        return <div>
+            {this.renderNewUserForm()}
+            {this.renderEditUserForm()}
+        </div>
     }
 }
-export default connect(null, {createUser})(ConnectedForm);
+export default connect(mapStateToProps, {createUser, updateUser})(ConnectedForm);

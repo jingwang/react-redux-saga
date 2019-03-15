@@ -1,8 +1,12 @@
 import {
     CREATE_USER, DATA_REQUESTED,
-    DELETE_USER, USER_DELETED,
-    DATA_LOADED} from "./action-types";
+    DELETE_USER, ADD_USER, UPDATE_USER,
+    DATA_LOADED, EDIT_USER
+} from "./action-types";
 
+export function addUser() {
+    return {type: ADD_USER}
+}
 
 export function requestData() {
     return {type: DATA_REQUESTED}
@@ -16,6 +20,15 @@ export function deleteUser(id) {
 export function createUser(payload) {
     console.log(payload);
     return {type: CREATE_USER, payload}
+}
+
+export function updateUser(payload) {
+    console.log(payload);
+    return {type: UPDATE_USER, payload}
+}
+
+export function editUser(payload) {
+    return {type: EDIT_USER, payload}
 }
 
 export function getData() {
