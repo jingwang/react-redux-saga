@@ -6,14 +6,17 @@ const mapStateToProps = state => {
     return { message: state.message };
 };
 
-const ConnectedMessage = ({ message }) => (
-    <h1>
-        {message}
-    </h1>
-);
+const ConnectedMessage = ({ message }) => {
+    if(message) {
+        return <div className={`alert alert-${message.type}`} role="alert">
+            {message.content}
+        </div>;
+    }
+    return null;
+};
 
 ConnectedMessage.propTypes = {
-    message: PropTypes.string
+    message: PropTypes.object
 };
 const Message = connect(mapStateToProps)(ConnectedMessage);
 export default Message;

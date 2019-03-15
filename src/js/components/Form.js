@@ -1,17 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import uuidv1 from "uuid";
-import { addArticle } from "../actions/index";
-function mapDispatchToProps(dispatch) {
-    return {
-        addArticle: article => dispatch(addArticle(article))
-    };
-}
+import uuidv4 from "uuid";
+import { createUser } from "../actions/index";
+
 class ConnectedForm extends Component {
     constructor() {
         super();
         this.state = {
-            title: ""
+            name: ''
         };
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -21,22 +17,22 @@ class ConnectedForm extends Component {
     }
     handleSubmit(event) {
         event.preventDefault();
-        const { title } = this.state;
-        const id = uuidv1();
-        this.props.addArticle({ title, id });
-        this.setState({ title: "" });
+        const { name } = this.state;
+        const id = uuidv4();
+        this.props.createUser({ id, name});
+        this.setState({ name: "" });
     }
     render() {
-        const { title } = this.state;
+        const { name } = this.state;
         return (
             <form onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                    <label htmlFor="title">Title</label>
+                    <label htmlFor="name">Name</label>
                     <input
                         type="text"
                         className="form-control"
-                        id="title"
-                        value={title}
+                        id="name"
+                        value={name}
                         onChange={this.handleChange}
                     />
                 </div>
@@ -47,4 +43,4 @@ class ConnectedForm extends Component {
         );
     }
 }
-export default connect(null, mapDispatchToProps)(ConnectedForm);
+export default connect(null, {createUser})(ConnectedForm);

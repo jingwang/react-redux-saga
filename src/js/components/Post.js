@@ -1,8 +1,7 @@
 import React, {Component} from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { requestData } from "../actions/index";
-import {getData} from "../actions";
+import { requestData, deleteUser } from "../actions/index";
 
 export class Post extends Component {
     constructor() {
@@ -11,12 +10,16 @@ export class Post extends Component {
     componentDidMount() {
         this.props.requestData();
     }
+    handleDelete(id) {
+        console.log(id);
+        this.props.deleteUser(id);
+    }
     render() {
         return (
             <ul className="list-group list-group-flush">
-                {this.props.articles.map(el => (
+                {this.props.users.map(el => (
                     <li className="list-group-item" key={el.id}>
-                        {el.title}
+                        <i onClick={() => this.handleDelete(el.id)} className="fas fa-trash-alt"></i> {el.name}
                     </li>
                 ))}
             </ul>
@@ -25,10 +28,15 @@ export class Post extends Component {
 }
 function mapStateToProps(state) {
     return {
-        articles: state.remoteArticles.slice(0, 10)
+        users: state.users
     };
 }
+
+Post.propTypes = {
+    users: PropTypes.array,
+    requestData: PropTypes.func.isRequired
+};
 export default connect(
     mapStateToProps,
-    { requestData }
+    { requestData, deleteUser }
 )(Post);

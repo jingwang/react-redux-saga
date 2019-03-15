@@ -3,20 +3,20 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const mapStateToProps = state => {
-    return { articles: state.articles };
+    return { users: state.users };
 };
 
-const ConnectedList = ({ articles }) => (
+const ConnectedList = ({ users }) => (
     <ul className="list-group list-group-flush">
-        {articles.map(el => (
-            <li className="list-group-item" key={el.id}>
-                {el.title}
+        {users.map(el => (
+            <li className="list-group-item" key={el.id + el.name}>
+                {el.name}
             </li>
         ))}
     </ul>
 );
 
 ConnectedList.propTypes = {
-    articles: PropTypes.array
+    users: PropTypes.array
 };
 export default connect(mapStateToProps)(ConnectedList);

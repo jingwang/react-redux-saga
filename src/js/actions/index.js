@@ -1,11 +1,21 @@
-import {ADD_ARTICLE, DATA_REQUESTED, DATA_LOADED} from "./action-types";
+import {
+    CREATE_USER, DATA_REQUESTED,
+    DELETE_USER, USER_DELETED,
+    DATA_LOADED} from "./action-types";
 
-export function addArticle(payload) {
-    return { type: ADD_ARTICLE, payload }
-};
 
 export function requestData() {
     return {type: DATA_REQUESTED}
+}
+
+export function deleteUser(id) {
+    console.log(id);
+    return {type: DELETE_USER, payload: {id: id}}
+}
+
+export function createUser(payload) {
+    console.log(payload);
+    return {type: CREATE_USER, payload}
 }
 
 export function getData() {
