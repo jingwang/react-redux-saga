@@ -1,9 +1,10 @@
 import React, { PureComponent } from "react";
 import { connect } from "react-redux";
 import { createUser, updateUser } from "../actions/index";
+import { getNewUserState, getEditUserState } from "../selectors";
 
 const mapStateToProps = state => {
-    return { editUser: state.editUser, newUser: state.newUser};
+    return { editUser: getEditUserState(state), newUser: getNewUserState(state)};
 };
 
 class ConnectedForm extends PureComponent {

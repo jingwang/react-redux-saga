@@ -2,6 +2,7 @@ import React, {PureComponent} from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import { requestData, deleteUser, editUser, addUser } from "../actions/index";
+import {getUsersState} from "../selectors";
 import styles from "./styles.less";
 
 export class Post extends PureComponent {
@@ -48,11 +49,13 @@ export class Post extends PureComponent {
         );
     }
 }
-function mapStateToProps(state) {
+
+
+const mapStateToProps = (state) => {
     return {
-        users: state.users
-    };
-}
+        users: getUsersState(state)
+    }
+};
 
 Post.propTypes = {
     users: PropTypes.array,

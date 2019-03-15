@@ -1,9 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import {getMessageState} from "../selectors";
 
 const mapStateToProps = state => {
-    return { message: state.message };
+    return { message: getMessageState(state) };
 };
 
 const ConnectedMessage = ({ message }) => {
