@@ -10,3 +10,4 @@ export const ADD_USER = "ADD_USER";
 export const RESET_EDIT_USER = "RESET_EDIT_USER";
 export const RESET_NEW_USER = "RESET_NEW_USER";
 export const MESSAGE = "MESSAGE";
+export const CLEAR_MESSAGE = "CLEAR_MESSAGE";

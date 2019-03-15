@@ -1,7 +1,7 @@
 import {
     CREATE_USER, DATA_REQUESTED,
     DELETE_USER, ADD_USER, UPDATE_USER,
-    DATA_LOADED, EDIT_USER
+    DATA_LOADED, EDIT_USER, CLEAR_MESSAGE
 } from "./action-types";
 
 export function addUser() {
@@ -10,6 +10,10 @@ export function addUser() {
 
 export function requestData() {
     return {type: DATA_REQUESTED}
+}
+
+export function clearMessage() {
+    return {type: CLEAR_MESSAGE}
 }
 
 export function deleteUser(id) {

@@ -1,7 +1,7 @@
 import React, {PureComponent} from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import { requestData, deleteUser, editUser, addUser } from "../actions/index";
+import { requestData, deleteUser, editUser, addUser, clearMessage } from "../actions/index";
 import {getUsersState} from "../selectors";
 import styles from "./styles.less";
 
@@ -14,6 +14,7 @@ export class Post extends PureComponent {
     }
 
     handleAdd() {
+        this.props.clearMessage();
         this.props.addUser();
     }
 
@@ -22,6 +23,7 @@ export class Post extends PureComponent {
     }
 
     handleEdit(payload) {
+        this.props.clearMessage();
         this.props.editUser(payload);
     }
     render() {
@@ -66,5 +68,5 @@ Post.propTypes = {
 };
 export default connect(
     mapStateToProps,
-    { requestData, deleteUser, editUser, addUser }
+    { requestData, deleteUser, editUser, addUser, clearMessage }
 )(Post);
